@@ -1,12 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sales_Managment
@@ -25,7 +19,7 @@ namespace Sales_Managment
         {
             //دالة لملئ خانة الايدي و للترقيم التلقائي 
             tbl.Clear();
-            tbl = db.readData("select max (Sup_Id) from Suppliers", "");
+            tbl = db.readData("select max (Sup_Id) from Suppliers", string.Empty);
 
             if ((tbl.Rows[0][0].ToString() == DBNull.Value.ToString()))
             {
@@ -48,33 +42,33 @@ namespace Sales_Managment
             btnSave.Enabled = false;
         }
 
-            int row;
-            // دالة لعرض البيانات
-            private void show()
+        int row;
+        // دالة لعرض البيانات
+        private void show()
+        {
+            tbl.Clear();
+            tbl = db.readData("select * from Suppliers", string.Empty);
+
+            if (tbl.Rows.Count <= 0)
             {
-                tbl.Clear();
-                tbl = db.readData("select * from Suppliers", "");
-
-                if (tbl.Rows.Count <= 0)
-                {
-                    MessageBox.Show("لا يوجد بيانات في هذه الشاشة");
-                }
-                else
-                {
-                    txtId.Text = tbl.Rows[row][0].ToString();
-                    txtName.Text = tbl.Rows[row][1].ToString();
-                    txtAddress.Text = tbl.Rows[row][2].ToString();
-                    txtPhone.Text = tbl.Rows[row][3].ToString();
-                    txtNotes.Text = tbl.Rows[row][4].ToString();
-                }
-                btnAdd.Enabled = false;
-                btnNew.Enabled = true;
-                btnDelete.Enabled = true;
-                btnDeleteAll.Enabled = true;
-                btnSave.Enabled = true;
+                MessageBox.Show("لا يوجد بيانات في هذه الشاشة");
             }
+            else
+            {
+                txtId.Text = tbl.Rows[row][0].ToString();
+                txtName.Text = tbl.Rows[row][1].ToString();
+                txtAddress.Text = tbl.Rows[row][2].ToString();
+                txtPhone.Text = tbl.Rows[row][3].ToString();
+                txtNotes.Text = tbl.Rows[row][4].ToString();
+            }
+            btnAdd.Enabled = false;
+            btnNew.Enabled = true;
+            btnDelete.Enabled = true;
+            btnDeleteAll.Enabled = true;
+            btnSave.Enabled = true;
+        }
 
-        
+
 
         private void frm_Suppliers_Load(object sender, EventArgs e)
         {
@@ -88,12 +82,12 @@ namespace Sales_Managment
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "")
+            if (txtName.Text == string.Empty)
             {
                 MessageBox.Show("من فضلك ادخل اسم المورد");
                 return;
             }
-            if (txtPhone.Text == "")
+            if (txtPhone.Text == string.Empty)
             {
                 MessageBox.Show("من فضلك ادخل رقم المورد");
                 return;
@@ -118,7 +112,7 @@ namespace Sales_Managment
             if (row == 0)
             {
                 tbl.Clear();
-                tbl = db.readData("select count (Sup_Id) from Suppliers", "");
+                tbl = db.readData("select count (Sup_Id) from Suppliers", string.Empty);
                 row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
                 show();
             }
@@ -132,7 +126,7 @@ namespace Sales_Managment
         private void btnNext_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Sup_Id) from Suppliers", "");
+            tbl = db.readData("select count (Sup_Id) from Suppliers", string.Empty);
             if (Convert.ToInt32(tbl.Rows[0][0]) - 1 == row)
             {
 
@@ -150,7 +144,7 @@ namespace Sales_Managment
         private void btnLast_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Sup_Id) from Suppliers", "");
+            tbl = db.readData("select count (Sup_Id) from Suppliers", string.Empty);
             row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
             show();
         }
@@ -162,12 +156,12 @@ namespace Sales_Managment
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "")
+            if (txtName.Text == string.Empty)
             {
                 MessageBox.Show("يرجى ادخال اسم المورد");
                 return;
             }
-            if (txtPhone.Text == "")
+            if (txtPhone.Text == string.Empty)
             {
                 MessageBox.Show("يرجى ادخال رقم المورد");
                 return;
@@ -177,14 +171,14 @@ namespace Sales_Managment
                 db.readData("update Suppliers set Sup_Name = '" + txtName.Text + "' , Sup_Adderes = '" + txtAddress.Text + "' , Sup_Phone = '" + txtPhone.Text + "' , Notes = '" + txtNotes.Text + "' where Sup_Id = " + txtId.Text + " ", "تم تعديل البيانات بنجاح");
                 autoNumber();
             }
-            
+
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(" هل انت متأكد من مسح بيانات المورد", "تاكيد ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                db.readData("delete from Suppliers where Sup_Id = " + txtId.Text + "", "تم مسح المورد بنجاح");
+                db.readData("delete from Suppliers where Sup_Id = " + txtId.Text + string.Empty, "تم مسح المورد بنجاح");
                 autoNumber();
             }
         }
@@ -202,7 +196,7 @@ namespace Sales_Managment
         {
             DataTable tblSearch = new DataTable();
             tblSearch.Clear();
-            tblSearch = db.readData("select * from Suppliers where Sup_Name like '%" + txtSearch.Text + "%'", "");
+            tblSearch = db.readData("select * from Suppliers where Sup_Name like '%" + txtSearch.Text + "%'", string.Empty);
             try
             {
                 txtId.Text = tblSearch.Rows[0][0].ToString();
@@ -228,11 +222,11 @@ namespace Sales_Managment
 
         private void frm_Suppliers_FormClosing(object sender, FormClosingEventArgs e)
         {
-            try 
+            try
             {
                 Frm_Buy.GetFormBuy.FillSuppliers();
             }
-            catch (Exception) 
+            catch (Exception)
             { }
 
         }

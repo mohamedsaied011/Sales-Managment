@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Sales_Managment
 {
@@ -15,11 +12,11 @@ namespace Sales_Managment
         SqlConnection conn = new SqlConnection(@"Data Source=LATITUDEE5440;Initial Catalog=Sales_System;Integrated Security=True");
         SqlCommand cmd = new SqlCommand();
         // read data from database
-        public DataTable readData(string stmt , string message)
+        public DataTable readData(string stmt, string message)
         {
-           
 
-                DataTable tbl = new DataTable();
+
+            DataTable tbl = new DataTable();
 
             try
             {
@@ -30,7 +27,7 @@ namespace Sales_Managment
                 tbl.Load(cmd.ExecuteReader());
 
                 conn.Close();
-                 if (message!= "")
+                if (message != string.Empty)
                 {
                     MessageBox.Show(message, "تاكيد", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -45,11 +42,11 @@ namespace Sales_Managment
                 MessageBox.Show(ex.Message);
             }
 
-            return tbl; 
+            return tbl;
         }
 
         // insert update delete
-        public bool excuteData(string stmt,string message)
+        public bool excuteData(string stmt, string message)
         {
             try
             {
@@ -58,7 +55,7 @@ namespace Sales_Managment
                 conn.Open();
                 cmd.ExecuteNonQuery();
                 conn.Close();
-                if (message!= "")
+                if (message != string.Empty)
                 {
                     MessageBox.Show(message, "تاكيد", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -69,7 +66,7 @@ namespace Sales_Managment
                 return true;
 
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return false;
             }
@@ -78,4 +75,3 @@ namespace Sales_Managment
 
     }
 }
-    

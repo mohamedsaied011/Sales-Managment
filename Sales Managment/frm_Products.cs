@@ -1,12 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sales_Managment
@@ -24,7 +18,7 @@ namespace Sales_Managment
         {
             //دالة لملئ خانة الايدي و للترقيم التلقائي 
             tbl.Clear();
-            tbl = db.readData("select max (Pro_Id) from Products", "");
+            tbl = db.readData("select max (Pro_Id) from Products", string.Empty);
 
             if ((tbl.Rows[0][0].ToString() == DBNull.Value.ToString()))
             {
@@ -67,7 +61,7 @@ namespace Sales_Managment
         private void FillPro()
 
         {
-            cbxProducts.DataSource = db.readData("select * from Products", "");
+            cbxProducts.DataSource = db.readData("select * from Products", string.Empty);
             cbxProducts.DisplayMember = "Pro_Name";
             cbxProducts.ValueMember = "Pro_Id";
         }
@@ -76,7 +70,7 @@ namespace Sales_Managment
         private void show()
         {
             tbl.Clear();
-            tbl = db.readData("select * from Products", "");
+            tbl = db.readData("select * from Products", string.Empty);
 
             if (tbl.Rows.Count <= 0)
             {
@@ -140,7 +134,7 @@ namespace Sales_Managment
             if (row == 0)
             {
                 tbl.Clear();
-                tbl = db.readData("select count (Pro_Name) from Products", "");
+                tbl = db.readData("select count (Pro_Name) from Products", string.Empty);
                 row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
                 show();
             }
@@ -154,7 +148,7 @@ namespace Sales_Managment
         private void btnNext_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Pro_Name) from Products", "");
+            tbl = db.readData("select count (Pro_Name) from Products", string.Empty);
             if (Convert.ToInt32(tbl.Rows[0][0]) - 1 == row)
             {
 
@@ -172,7 +166,7 @@ namespace Sales_Managment
         private void btnLast_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Pro_Name) from Products", "");
+            tbl = db.readData("select count (Pro_Name) from Products", string.Empty);
             row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
             show();
         }
@@ -185,7 +179,7 @@ namespace Sales_Managment
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtProName.Text == "")
+            if (txtProName.Text == string.Empty)
             {
                 MessageBox.Show("  من فضلك ادخل اسم المنتج اولا");
                 return;
@@ -225,7 +219,7 @@ namespace Sales_Managment
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (txtProName.Text == "")
+            if (txtProName.Text == string.Empty)
             {
                 MessageBox.Show("  من فضلك ادخل اسم المنتج اولا");
                 return;
@@ -267,7 +261,7 @@ namespace Sales_Managment
         {
             if (MessageBox.Show(" هل انت متأكد من مسح بيانات المنتج ", "تاكيد ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                db.readData("delete from Products where Pro_Id = " + txtId.Text + "", "تم مسح البيانات بنجاح");
+                db.readData("delete from Products where Pro_Id = " + txtId.Text + string.Empty, "تم مسح البيانات بنجاح");
                 autoNumber();
             }
         }
@@ -281,12 +275,12 @@ namespace Sales_Managment
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (txtProNameSearch.Text != "")
+            if (txtProNameSearch.Text != string.Empty)
             {
                 DataTable tblSearch = new DataTable();
                 tblSearch.Clear();
 
-                tblSearch = db.readData("select * from Products where Pro_Name Like '%" + txtProNameSearch.Text + "%' ", "");
+                tblSearch = db.readData("select * from Products where Pro_Name Like '%" + txtProNameSearch.Text + "%' ", string.Empty);
 
                 if (tblSearch.Rows.Count <= 0)
                 {
@@ -318,7 +312,7 @@ namespace Sales_Managment
                 DataTable tblSearch = new DataTable();
                 tblSearch.Clear();
 
-                tblSearch = db.readData("select * from Products where Pro_Id  = " + cbxProducts.SelectedValue + " ", "");
+                tblSearch = db.readData("select * from Products where Pro_Id  = " + cbxProducts.SelectedValue + " ", string.Empty);
 
 
                 txtId.Text = tblSearch.Rows[0][0].ToString();

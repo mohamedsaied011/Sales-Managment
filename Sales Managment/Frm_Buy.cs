@@ -1,12 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sales_Managment
@@ -15,7 +9,7 @@ namespace Sales_Managment
     {
         // داله للتأثير على فورم من فورم اخرى
         private static Frm_Buy frm;
-        static void frm_FrmClosed(object sender, FormClosedEventArgs e )
+        static void frm_FrmClosed(object sender, FormClosedEventArgs e)
         {
             frm = null;
         }
@@ -24,14 +18,14 @@ namespace Sales_Managment
             get
             {
 
-                if (frm== null)
+                if (frm == null)
                 {
                     frm = new Frm_Buy();
                     frm.FormClosed += new FormClosedEventHandler(frm_FrmClosed);
                 }
                 return frm;
             }
-            
+
         }
 
         public Frm_Buy()
@@ -48,7 +42,7 @@ namespace Sales_Managment
         {
             //دالة لملئ خانة الايدي و للترقيم التلقائي 
             tbl.Clear();
-            tbl = db.readData("select max (Order_Id) from Buy", "");
+            tbl = db.readData("select max (Order_Id) from Buy", string.Empty);
 
             if ((tbl.Rows[0][0].ToString() == DBNull.Value.ToString()))
             {
@@ -69,9 +63,9 @@ namespace Sales_Managment
             catch (Exception)
             {
 
-                
+
             }
-            
+
             FillSuppliers();
             FillItems();
             dgvBuy.Rows.Clear();
@@ -82,16 +76,16 @@ namespace Sales_Managment
             txtTotal.Clear();
 
         }
-        private void FillItems() 
+        private void FillItems()
         {
-            cbxItems.DataSource = db.readData("select * from Products ", "");
+            cbxItems.DataSource = db.readData("select * from Products ", string.Empty);
             cbxItems.DisplayMember = "Pro_Name";
             cbxItems.ValueMember = "Pro_Id";
         }
         public void FillSuppliers()
         {
-            cbxSupplier.DataSource = db.readData("select * from Suppliers ", "");
-            cbxSupplier.DisplayMember = "Sup_Name"; 
+            cbxSupplier.DataSource = db.readData("select * from Suppliers ", string.Empty);
+            cbxSupplier.DisplayMember = "Sup_Name";
             cbxSupplier.ValueMember = "Sup_Id";
         }
 
@@ -104,9 +98,9 @@ namespace Sales_Managment
             catch (Exception)
             {
 
-                
+
             }
-            
+
 
 
         }
@@ -129,7 +123,7 @@ namespace Sales_Managment
 
         private void btnItems_Click(object sender, EventArgs e)
         {
-            if (cbxItems.Text =="اختر منتج")
+            if (cbxItems.Text == "اختر منتج")
             {
                 MessageBox.Show("من فضلك اختر منتح", "تأكيد", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -141,7 +135,7 @@ namespace Sales_Managment
             }
             DataTable tblItems = new DataTable();
             tblItems.Clear();
-            tblItems = db.readData("select * from Products where Pro_Id = " + cbxItems.SelectedValue+"", "");
+            tblItems = db.readData("select * from Products where Pro_Id = " + cbxItems.SelectedValue + string.Empty, string.Empty);
             if (tblItems.Rows.Count >= 1)
             {
                 try
@@ -167,28 +161,28 @@ namespace Sales_Managment
                 catch (Exception)
                 {
 
-                   
+
                 }
 
 
                 try
                 {
                     decimal TotalOrder = 0;
-                    for (int i = 0; i <= dgvBuy.Rows.Count -1; i++)
+                    for (int i = 0; i <= dgvBuy.Rows.Count - 1; i++)
                     {
                         TotalOrder += Convert.ToDecimal(dgvBuy.Rows[i].Cells[5].Value);
                     }
 
-                    txtTotal.Text = Math.Round (TotalOrder,2).ToString();
+                    txtTotal.Text = Math.Round(TotalOrder, 2).ToString();
                     lblItemsCount.Text = (dgvBuy.Rows.Count).ToString();
                 }
                 catch (Exception)
                 {
 
-                   
+
                 }
             }
-            
+
         }
 
         private void btnDeleteItem_Click(object sender, EventArgs e)
@@ -198,7 +192,7 @@ namespace Sales_Managment
                 int Index = dgvBuy.SelectedRows[0].Index;
                 dgvBuy.Rows.RemoveAt(Index);
 
-                if (dgvBuy.Rows.Count <=0)
+                if (dgvBuy.Rows.Count <= 0)
                 {
                     txtTotal.Text = "0";
                 }
@@ -225,7 +219,7 @@ namespace Sales_Managment
 
         private void txtBarcode_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (txtBarcode.Text == "")
+            if (txtBarcode.Text == string.Empty)
             {
 
             }
@@ -238,7 +232,7 @@ namespace Sales_Managment
 
                     DataTable tblItems = new DataTable();
                     tblItems.Clear();
-                    tblItems = db.readData("select * from Products where Barcode = '" + txtBarcode.Text + "'", "");
+                    tblItems = db.readData("select * from Products where Barcode = '" + txtBarcode.Text + "'", string.Empty);
                     if (tblItems.Rows.Count >= 1)
                     {
                         try
@@ -284,7 +278,7 @@ namespace Sales_Managment
 
         private void Frm_Buy_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode ==Keys.F12)
+            if (e.KeyCode == Keys.F12)
             {
                 if (dgvBuy.Rows.Count >= 1)
                 {
@@ -293,27 +287,27 @@ namespace Sales_Managment
                         MessageBox.Show("من فضلك اختر مورد اولا", "تاكيد");
                         return;
                     }
-                        try
-                        {
+                    try
+                    {
 
-                            string d = dtpDate.Value.ToString("dd/MM/yyyy");
-                            db.excuteData("insert into Buy values(" + txtId.Text + ", '" + d + "', " + cbxSupplier.SelectedValue + ")", "");
-                            for (int i = 0; i <= dgvBuy.Rows.Count -1; i++)
-                            {
-                                db.excuteData("insert into Buy_Detalis values (" + txtId.Text+", "+cbxSupplier.SelectedValue+","+dgvBuy.Rows[i].Cells[0].Value+",'"+d+"',"+ dgvBuy.Rows[i].Cells[2].Value + ", '"+123+  "',"+ dgvBuy.Rows[i].Cells[3].Value + ","+ dgvBuy.Rows[i].Cells[4].Value + ", "+ dgvBuy.Rows[i].Cells[5].Value + ") ", "");
-                                autoNumber();
-                            }
-                        }
-                        catch (Exception)
+                        string d = dtpDate.Value.ToString("dd/MM/yyyy");
+                        db.excuteData("insert into Buy values(" + txtId.Text + ", '" + d + "', " + cbxSupplier.SelectedValue + ")", string.Empty);
+                        for (int i = 0; i <= dgvBuy.Rows.Count - 1; i++)
                         {
-
-                            throw;
+                            db.excuteData("insert into Buy_Detalis values (" + txtId.Text + ", " + cbxSupplier.SelectedValue + "," + dgvBuy.Rows[i].Cells[0].Value + ",'" + d + "'," + dgvBuy.Rows[i].Cells[2].Value + ", '" + 123 + "'," + dgvBuy.Rows[i].Cells[3].Value + "," + dgvBuy.Rows[i].Cells[4].Value + ", " + dgvBuy.Rows[i].Cells[5].Value + ") ", string.Empty);
+                            autoNumber();
                         }
-                        
-                      
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
+
                 }
             }
-            
+
         }
     }
 }

@@ -1,12 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sales_Managment
@@ -23,7 +17,7 @@ namespace Sales_Managment
         {
             //دالة لملئ خانة الايدي و للترقيم التلقائي 
             tbl.Clear();
-            tbl = db.readData("select max (Cust_Id) from Customers", "");
+            tbl = db.readData("select max (Cust_Id) from Customers", string.Empty);
 
             if ((tbl.Rows[0][0].ToString() == DBNull.Value.ToString()))
             {
@@ -44,7 +38,7 @@ namespace Sales_Managment
             btnDelete.Enabled = false;
             btnDeleteAll.Enabled = false;
             btnSave.Enabled = false;
-          
+
 
         }
         int row;
@@ -52,7 +46,7 @@ namespace Sales_Managment
         private void show()
         {
             tbl.Clear();
-            tbl = db.readData("select * from Customers", "");
+            tbl = db.readData("select * from Customers", string.Empty);
 
             if (tbl.Rows.Count <= 0)
             {
@@ -79,9 +73,9 @@ namespace Sales_Managment
 
         private void Frm_Customer_Load(object sender, EventArgs e)
         {
-           
+
             autoNumber();
-            
+
         }
 
         private void labelControl1_Click(object sender, EventArgs e)
@@ -117,7 +111,7 @@ namespace Sales_Managment
         private void simpleButton1_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Cust_Id) from Customers", "");
+            tbl = db.readData("select count (Cust_Id) from Customers", string.Empty);
             row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
             show();
         }
@@ -126,7 +120,7 @@ namespace Sales_Managment
         {
             if (MessageBox.Show(" هل انت متأكد من مسح بيانات العميل", "تاكيد ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                db.readData("delete from Customers where Cust_Id = " + txtId.Text + "", "تم مسح العميل بنجاح");
+                db.readData("delete from Customers where Cust_Id = " + txtId.Text + string.Empty, "تم مسح العميل بنجاح");
                 autoNumber();
             }
         }
@@ -143,7 +137,7 @@ namespace Sales_Managment
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "")
+            if (txtName.Text == string.Empty)
             {
                 MessageBox.Show("من فضلك ادخل اسم العميل");
                 return;
@@ -154,7 +148,7 @@ namespace Sales_Managment
                                + txtAddress.Text + "','" + txtPhone.Text + "','" + txtNotes.Text + "')", "تم الادخال بنجاح");
                 autoNumber();
             }
-           
+
 
         }
 
@@ -171,7 +165,7 @@ namespace Sales_Managment
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "")
+            if (txtName.Text == string.Empty)
             {
                 MessageBox.Show("يرجى ادخال اسم العميل");
                 return;
@@ -181,16 +175,16 @@ namespace Sales_Managment
                 db.readData("update Customers set Cust_Name = '" + txtName.Text + "' , Cust_Adderes = '" + txtAddress.Text + "' , Cust_Phone = '" + txtPhone.Text + "' , Notes = '" + txtNotes.Text + "' where Cust_Id = " + txtId.Text + " ", "تم تعديل البيانات بنجاح");
                 autoNumber();
             }
-           
-            
-            
+
+
+
         }
 
         private void btnNext_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Cust_Id) from Customers", "");
-            if (Convert.ToInt32(tbl.Rows[0][0]) - 1 == row ) 
+            tbl = db.readData("select count (Cust_Id) from Customers", string.Empty);
+            if (Convert.ToInt32(tbl.Rows[0][0]) - 1 == row)
             {
 
 
@@ -202,7 +196,7 @@ namespace Sales_Managment
                 row++;
                 show();
             }
-            
+
         }
 
         private void btnPrev_Click(object sender, EventArgs e)
@@ -210,7 +204,7 @@ namespace Sales_Managment
             if (row == 0)
             {
                 tbl.Clear();
-                tbl = db.readData("select count (Cust_Id) from Customers", "");
+                tbl = db.readData("select count (Cust_Id) from Customers", string.Empty);
                 row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
                 show();
             }
@@ -219,7 +213,7 @@ namespace Sales_Managment
                 row--;
                 show();
             }
-            
+
         }
 
         private void simpleButton1_Click_1(object sender, EventArgs e)
@@ -241,7 +235,7 @@ namespace Sales_Managment
         {
             DataTable tblSearch = new DataTable();
             tblSearch.Clear();
-            tblSearch = db.readData("select * from Customers where Cust_Name like '%"+txtSearch.Text+"%'", "");
+            tblSearch = db.readData("select * from Customers where Cust_Name like '%" + txtSearch.Text + "%'", string.Empty);
             try
             {
                 txtId.Text = tblSearch.Rows[0][0].ToString();
@@ -253,9 +247,9 @@ namespace Sales_Managment
             catch (Exception)
             {
 
-               
+
             }
-        
+
 
             btnAdd.Enabled = false;
             btnNew.Enabled = true;

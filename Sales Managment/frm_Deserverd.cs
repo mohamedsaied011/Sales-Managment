@@ -1,12 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sales_Managment
@@ -17,14 +11,14 @@ namespace Sales_Managment
         {
             InitializeComponent();
         }
-      
+
         Database db = new Database();
         DataTable tbl = new DataTable();
         private void autoNumber()
         {
             //دالة لملئ خانة الايدي و للترقيم التلقائي 
             tbl.Clear();
-            tbl = db.readData("select max (Des_Id) from Deserved", "");
+            tbl = db.readData("select max (Des_Id) from Deserved", string.Empty);
 
             if ((tbl.Rows[0][0].ToString() == DBNull.Value.ToString()))
             {
@@ -50,7 +44,7 @@ namespace Sales_Managment
         private void show()
         {
             tbl.Clear();
-            tbl = db.readData("select * from Deserved", "");
+            tbl = db.readData("select * from Deserved", string.Empty);
 
             if (tbl.Rows.Count <= 0)
             {
@@ -60,7 +54,7 @@ namespace Sales_Managment
             {
                 txtId.Text = tbl.Rows[row][0].ToString();
                 nudPrice.Value = Convert.ToDecimal(tbl.Rows[row][1]);
-                this.Text= tbl.Rows[row][2].ToString();
+                this.Text = tbl.Rows[row][2].ToString();
                 DateTime dt = DateTime.ParseExact(this.Text, "dd/MM/yyyy", null);
                 dtpDate.Value = dt;
                 txtNote.Text = tbl.Rows[row][3].ToString();
@@ -77,7 +71,7 @@ namespace Sales_Managment
         private void FillType()
 
         {
-            cbxType.DataSource = db.readData("select * from Deserved_Type", "");
+            cbxType.DataSource = db.readData("select * from Deserved_Type", string.Empty);
             cbxType.DisplayMember = "Des_Name";
             cbxType.ValueMember = "Des_Id";
         }
@@ -106,7 +100,7 @@ namespace Sales_Managment
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (cbxType.Text == "")
+            if (cbxType.Text == string.Empty)
             {
                 MessageBox.Show("من فضلك حدد النوع");
                 return;
@@ -114,7 +108,7 @@ namespace Sales_Managment
             else
             {
                 string d = dtpDate.Value.ToString("dd/MM/yyyy");
-                db.excuteData("insert into Deserved Values (" + txtId.Text + ","+nudPrice.Value+ ",'"+ d +"','"+txtNote.Text+"'," + cbxType.SelectedValue + ")", "تم الادخال بنجاح");
+                db.excuteData("insert into Deserved Values (" + txtId.Text + "," + nudPrice.Value + ",'" + d + "','" + txtNote.Text + "'," + cbxType.SelectedValue + ")", "تم الادخال بنجاح");
                 autoNumber();
             }
         }
@@ -122,7 +116,7 @@ namespace Sales_Managment
         private void btnLast_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Des_Id) from Deserved", "");
+            tbl = db.readData("select count (Des_Id) from Deserved", string.Empty);
             row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
             show();
         }
@@ -138,7 +132,7 @@ namespace Sales_Managment
             if (row == 0)
             {
                 tbl.Clear();
-                tbl = db.readData("select count (Des_Id) from Deserved", "");
+                tbl = db.readData("select count (Des_Id) from Deserved", string.Empty);
                 row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
                 show();
             }
@@ -157,7 +151,7 @@ namespace Sales_Managment
         private void btnNext_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Des_Id) from Deserved", "");
+            tbl = db.readData("select count (Des_Id) from Deserved", string.Empty);
             if (Convert.ToInt32(tbl.Rows[0][0]) - 1 == row)
             {
 
@@ -185,11 +179,11 @@ namespace Sales_Managment
                 MessageBox.Show("يجب ان تكون القيمة اكبر من صفر");
                 return;
             }
-          
+
             else
             {
                 string d = dtpDate.Value.ToString("dd/MM/yyyy");
-                db.readData("update Deserved set  Price = " + nudPrice.Value + " , Data = '" + d + "' , Notes = '" + txtNote.Text + "', Type_Id = "+cbxType.SelectedValue+ "   where  Des_Id =" + txtId.Text + " ", "تم تعديل البيانات بنجاح");
+                db.readData("update Deserved set  Price = " + nudPrice.Value + " , Data = '" + d + "' , Notes = '" + txtNote.Text + "', Type_Id = " + cbxType.SelectedValue + "   where  Des_Id =" + txtId.Text + " ", "تم تعديل البيانات بنجاح");
                 autoNumber();
             }
         }
@@ -198,7 +192,7 @@ namespace Sales_Managment
         {
             if (MessageBox.Show(" هل انت متأكد من مسح بيانات المصروف", "تاكيد ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                db.readData("delete from Deserved where Des_Id = " + txtId.Text + "", "تم مسح المصروف بنجاح");
+                db.readData("delete from Deserved where Des_Id = " + txtId.Text + string.Empty, "تم مسح المصروف بنجاح");
                 autoNumber();
             }
         }
@@ -207,7 +201,7 @@ namespace Sales_Managment
         {
             if (MessageBox.Show(" هل انت متأكد من مسح جميع البيانات ", "تاكيد ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                db.readData("delete  from Deserved",  "تم مسح جميع المصروفات بنجاح");
+                db.readData("delete  from Deserved", "تم مسح جميع المصروفات بنجاح");
                 autoNumber();
             }
         }

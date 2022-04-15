@@ -1,12 +1,6 @@
-﻿using DevExpress.XtraEditors;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Sales_Managment
@@ -23,7 +17,7 @@ namespace Sales_Managment
         {
             //دالة لملئ خانة الايدي و للترقيم التلقائي 
             tbl.Clear();
-            tbl = db.readData("select max (Des_Id) from Deserved_Type", "");
+            tbl = db.readData("select max (Des_Id) from Deserved_Type", string.Empty);
 
             if ((tbl.Rows[0][0].ToString() == DBNull.Value.ToString()))
             {
@@ -49,7 +43,7 @@ namespace Sales_Managment
         private void show()
         {
             tbl.Clear();
-            tbl = db.readData("select * from Deserved_Type", "");
+            tbl = db.readData("select * from Deserved_Type", string.Empty);
 
             if (tbl.Rows.Count <= 0)
             {
@@ -89,7 +83,7 @@ namespace Sales_Managment
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "")
+            if (txtName.Text == string.Empty)
             {
                 MessageBox.Show("من فضلك ادخل اسم النوع");
                 return;
@@ -109,7 +103,7 @@ namespace Sales_Managment
         private void btnLast_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Des_Id) from Deserved_Type", "");
+            tbl = db.readData("select count (Des_Id) from Deserved_Type", string.Empty);
             row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
             show();
         }
@@ -117,7 +111,7 @@ namespace Sales_Managment
         private void btnNext_Click(object sender, EventArgs e)
         {
             tbl.Clear();
-            tbl = db.readData("select count (Des_Id) from Deserved_Type", "");
+            tbl = db.readData("select count (Des_Id) from Deserved_Type", string.Empty);
             if (Convert.ToInt32(tbl.Rows[0][0]) - 1 == row)
             {
 
@@ -137,7 +131,7 @@ namespace Sales_Managment
             if (row == 0)
             {
                 tbl.Clear();
-                tbl = db.readData("select count (Des_Id) from Deserved_Type", "");
+                tbl = db.readData("select count (Des_Id) from Deserved_Type", string.Empty);
                 row = Convert.ToInt32(tbl.Rows[0][0]) - 1;
                 show();
             }
@@ -161,7 +155,7 @@ namespace Sales_Managment
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (txtName.Text == "")
+            if (txtName.Text == string.Empty)
             {
                 MessageBox.Show("يرجى ادخال اسم النوع");
                 return;
@@ -177,7 +171,7 @@ namespace Sales_Managment
         {
             if (MessageBox.Show(" هل انت متأكد من مسح النوع", "تاكيد ", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                db.readData("delete from Deserved_Type where Des_Id = " + txtId.Text + "", "تم مسح النوع بنجاح");
+                db.readData("delete from Deserved_Type where Des_Id = " + txtId.Text + string.Empty, "تم مسح النوع بنجاح");
                 autoNumber();
             }
         }
