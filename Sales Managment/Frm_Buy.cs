@@ -88,9 +88,10 @@ namespace Sales_Managment
             cbxSupplier.DisplayMember = "Sup_Name";
             cbxSupplier.ValueMember = "Sup_Id";
         }
-
+        
         private void Frm_Buy_Load(object sender, EventArgs e)
         {
+            int test = 0;
             try
             {
                 autoNumber();
